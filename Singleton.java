@@ -26,7 +26,8 @@ class Singleton{
     
     public String s ="";
     
-    //forced to create object throuh getinstance by making private 
+    //forced to create object throuh getInstance() by making private 
+    // Note that Singleton obj is not created until we need it and call getInstance() method. This is called lazy instantiation.
     private Singleton(){
         s = "Hello World";
     }
