@@ -26,6 +26,7 @@ class Singleton{
     
     public String s ="";
     
+    //forced to create object throuh getinstance by making private 
     private Singleton(){
         s = "Hello World";
     }
