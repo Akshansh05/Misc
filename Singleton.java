@@ -20,6 +20,7 @@ class Main {
 
     }
 }
+//this is not thread safe 
 class Singleton{
     
     public static Singleton instance =null;
