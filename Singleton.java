@@ -18,6 +18,7 @@ class Main {
          }
     }
 }
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     
     class SingletonNotThreadSafe {
         
@@ -36,8 +37,9 @@ class Main {
         }
         
 }
-
-   class SingletonThreadSafeButSlow{
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+    class SingletonThreadSafeButSlow{
        
         private static SingletonThreadSafeButSlow singletonObj = null;
         
@@ -56,8 +58,9 @@ class Main {
        
    }
  
-   
-   class SingletonThreadSafeEagerInstantiation{
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+ 
+  class SingletonThreadSafeEagerInstantiation{
        
        //eagerly created the object and using that 
          private static SingletonThreadSafeEagerInstantiation singletonObj = new SingletonThreadSafeEagerInstantiation();;
@@ -72,9 +75,10 @@ class Main {
        
    }
    
-   
-     //best
-   class SingletonthreadSafeAndFast{
+   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     
+       //best
+     class SingletonthreadSafeAndFast{
        
        //made volatile to keep it thread safe and read data from main memory and not shared memory
        private static volatile SingletonthreadSafeAndFast singletonObj = null;
