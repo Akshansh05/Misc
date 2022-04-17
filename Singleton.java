@@ -63,6 +63,7 @@ class Main {
   class SingletonThreadSafeEagerInstantiation{
        
        //eagerly created the object and using that 
+      //since the singletonObj is static, it is given value at class creation and thus is thread safe 
          private static SingletonThreadSafeEagerInstantiation singletonObj = new SingletonThreadSafeEagerInstantiation();;
         
         private SingletonThreadSafeEagerInstantiation(){
