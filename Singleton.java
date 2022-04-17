@@ -5,38 +5,100 @@ import java.io.*;
 // The main method must be in a class named "Main".
 class Main {
     public static void main(String[] args) {
+       // System.out.println("Hello world!");
         
-        Singleton x = Singleton.getInstance();
-        Singleton y = Singleton.getInstance();
+        SingletonNotThreadSafe x = SingletonNotThreadSafe.getInstance();
         
-        if(x == y){
-            System.out.println("Same");
-        }else{
-            System.out.println("Different");
+        SingletonNotThreadSafe y = SingletonNotThreadSafe.getInstance();
+        
+         if(x==y){
+             System.out.println("Same");
+         }else{
+             System.out.println("Different");
+         }
+    }
+}
+    
+    class SingletonNotThreadSafe {
+        
+        private static SingletonNotThreadSafe singletonObj = null;
+        
+        private SingletonNotThreadSafe(){
+            
         }
         
-        System.out.println(x.s);
-        System.out.println(y.s);
+        public static SingletonNotThreadSafe getInstance(){
+                //lazy instantiation
+            if(singletonObj == null){
+                singletonObj = new SingletonNotThreadSafe();
+            }
+            return singletonObj;
+        }
+        
+}
 
-    }
-}
-//this is not thread safe 
-class Singleton{
-    
-    public static Singleton instance =null;
-    
-    public String s ="";
-    
-    //forced to create object throuh getInstance() by making private 
-    // Note that Singleton obj is not created until we need it and call getInstance() method. This is called lazy instantiation.
-    private Singleton(){
-        s = "Hello World";
-    }
-    public static Singleton getInstance(){
+   class SingletonThreadSafeButSlow{
+       
+        private static SingletonThreadSafeButSlow singletonObj = null;
         
-        if(instance == null){
-            instance = new Singleton();
+        private SingletonThreadSafeButSlow(){
+            
         }
-        return instance;
-    }
-}
+        
+        //add synchronized 
+        public static synchronized SingletonThreadSafeButSlow getInstance(){
+                
+            if(singletonObj == null){
+                singletonObj = new SingletonThreadSafeButSlow();
+            }
+            return singletonObj;
+        }
+       
+   }
+ 
+   
+   class SingletonThreadSafeEagerInstantiation{
+       
+       //eagerly created the object and using that 
+         private static SingletonThreadSafeEagerInstantiation singletonObj = new SingletonThreadSafeEagerInstantiation();;
+        
+        private SingletonThreadSafeEagerInstantiation(){
+            
+        }
+        
+        public static SingletonThreadSafeEagerInstantiation getInstance(){
+            return singletonObj;
+        }
+       
+   }
+   
+   
+     //best
+   class SingletonthreadSafeAndFast{
+       
+       //made volatile to keep it thread safe and read data from main memory and not shared memory
+       private static volatile SingletonthreadSafeAndFast singletonObj = null;
+       
+        private SingletonthreadSafeAndFast(){
+            
+        }
+        
+        private static SingletonthreadSafeAndFast getInstance(){
+            
+            if(singletonObj == null){
+                
+                //did to keep it same for any thread for the 1st time for the rest time value will directly be returned 
+                synchronized(SingletonthreadSafeAndFast.class){
+                    
+                    // check again as multiple threads
+                   // can reach above step
+                    if(singletonObj == null){
+                        singletonObj = new SingletonthreadSafeAndFast();
+                    }
+                }
+            }
+            
+            return singletonObj;
+        }
+       
+   }
