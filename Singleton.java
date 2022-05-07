@@ -107,3 +107,17 @@ class Main {
         }
        
    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* Some facts
+1. Singleton property can be broken in 3 below ways 
+    a. Reflection property of constructors can be avoided by using enums
+    b. Serialization of Singleton instance can be avoided by using below
+    protected Object readResolve()
+    {
+        return instance;
+    }
+    c. cloning of Singleton instance can be avoided using overriding clone function refer- https://www.geeksforgeeks.org/prevent-singleton-pattern-reflection-serialization-cloning/?ref=lbp
+    
+    */
