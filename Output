@@ -1,6 +1,0 @@
-Standard Console:: ConsoleLogger: This is just Info Message
-Standard File:: FileLogger: This is Debug Message
-Standard Console:: ConsoleLogger: This is Debug Message
-Standard Error:: ErrorLogger: This is Error Message
-Standard File:: FileLogger: This is Error Message
-Standard Console:: ConsoleLogger: This is Error Message
