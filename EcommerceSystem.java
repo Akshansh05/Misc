@@ -1,3 +1,5 @@
+
+//NOTE THIS IS EXAMPLE OF CONCURRENT, PARALLEL TASK, WITH FUTURES  AND ABSTRACTION  
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
