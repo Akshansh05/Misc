@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 interface Product {
     int getProductId();
@@ -101,7 +99,7 @@ class User {
 }
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         // Create some sample products
         Product product1 = new ConcreteProduct(1, "Product 1", 10.99);
         Product product2 = new ConcreteProduct(2, "Product 2", 19.99);
@@ -112,26 +110,23 @@ public class Main {
         // Create a user with the cart
         User user = new User(1, "John Doe", cart);
 
-        // Create a thread pool with multiple threads
+        // Create an executor service
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        // Add products to the user's cart concurrently
-        executorService.submit(() -> user.addToCart(product1));
-        executorService.submit(() -> user.addToCart(product2));
+        // Create a list to hold the Future objects
+        List<Future<?>> futures = new ArrayList<>();
 
-        // Shutdown the executor service to stop accepting new tasks
-        executorService.shutdown();
+        // Submit tasks to the executor service and store the Future objects
+        futures.add(executorService.submit(() -> user.addToCart(product1)));
+        futures.add(executorService.submit(() -> user.addToCart(product2)));
 
-        try {
-            // Wait for all tasks to complete or timeout after a specified duration
-            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-                // If tasks are still running after the timeout, force shutdown
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-            Thread.currentThread().interrupt();
+        // Wait for all tasks to complete
+        for (Future<?> future : futures) {
+            future.get(); // Blocking call until the task is complete
         }
+
+        // Shutdown the executor service
+        executorService.shutdown();
 
         // Calculate the total and checkout
         double total = user.checkout();
