@@ -103,6 +103,8 @@ public class Main {
         // Create some sample products
         Product product1 = new ConcreteProduct(1, "Product 1", 10.99);
         Product product2 = new ConcreteProduct(2, "Product 2", 19.99);
+        Product product3 = new ConcreteProduct(3, "Product 3", 14.99);
+        Product product4 = new ConcreteProduct(4, "Product 4", 7.99);
 
         // Create a cart
         Cart cart = new ConcreteCart();
@@ -110,15 +112,23 @@ public class Main {
         // Create a user with the cart
         User user = new User(1, "John Doe", cart);
 
-        // Create an executor service
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        // Create a list of products to add to the cart
+        List<Product> productsToAdd = List.of(product1, product2, product3, product4);
+
+        // Create a thread pool with the desired number of threads
+        ExecutorService executorService = Executors.newFixedThreadPool(productsToAdd.size());
 
         // Create a list to hold the Future objects
         List<Future<?>> futures = new ArrayList<>();
 
         // Submit tasks to the executor service and store the Future objects
-        futures.add(executorService.submit(() -> user.addToCart(product1)));
-        futures.add(executorService.submit(() -> user.addToCart(product2)));
+        for (Product product : productsToAdd) {
+            Callable<Void> task = () -> {
+                user.addToCart(product);
+                return null;
+            };
+            futures.add(executorService.submit(task));
+        }
 
         // Wait for all tasks to complete
         for (Future<?> future : futures) {
