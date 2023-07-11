@@ -24,7 +24,7 @@ public class LoggerMain {
 
 /*
 
-file/logs   error    debug   console
+file/logs   error    debug    info
 errorLogger   yes     yes      yes 
 fileLogger    no      yes      yes
 consoleLogger no      no       yes
