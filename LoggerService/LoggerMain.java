@@ -21,3 +21,12 @@ public class LoggerMain {
         return errorLogger;
     }
 }
+
+/*
+
+file/logs   error    debug   console
+errorLogger   yes     yes      yes 
+fileLogger    no      yes      yes
+consoleLogger no      no       yes
+
+*/    
