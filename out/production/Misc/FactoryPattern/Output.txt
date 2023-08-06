@@ -1,0 +1,3 @@
+Rate: 7
+Unit: 5
+Bill Amount: 35
