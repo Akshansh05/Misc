@@ -1,167 +1,164 @@
-import java.util.*;
 
- class MyMap<K extends Object,V extends Object> {
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-    private ArrayList<LinkedList<MyMap.Entry<K,V>>> bucketList;
-    private int size;
+public class ImplementHashMap<K, V> {
 
-    public MyMap(int size) {
-      this.size = size;
-      bucketList = new ArrayList<>();
+    private final int size;
+    private List<LinkedList<Entry<K, V>>> bucketList;
 
-      for (int i = 0; i < size; i++) {
-        LinkedList<MyMap.Entry<K,V>> ll = new LinkedList<>();
-        bucketList.add(ll);
-      }
+    public ImplementHashMap(int MAX_SIZE) {
+        this.bucketList = new ArrayList<>();
+        this.size = MAX_SIZE;
 
-    }
-
-    // Implements put() of a hashmap
-    public void put(K key, V value) {
-      if (key == null) {
-        return;
-      }
-
-      int hash = hash(key);
-      MyMap.Entry<K, V> newEntry = new MyMap.Entry<K, V>(key, value);
-      LinkedList<Entry<K,V>> linkedList = bucketList.get(hash);
-
-      if (linkedList.size() == 0) {
-        linkedList = bucketList.get(hash);
-        linkedList.add(newEntry);
-      } else {
-        for (MyMap.Entry<K,V> entry: linkedList) {
-            K entryKey = entry.getKey();
-            if (entryKey.equals(key)) {
-              entry.setValue(value);
-              return;
-            }
+        for (int i = 0; i < size; i++) {
+            LinkedList<Entry<K, V>> ll = new LinkedList<>();
+            bucketList.add(ll);
         }
+    }
 
-        linkedList.add(newEntry);
-      }
+    public static void main(String[] args) {
+        ImplementHashMap<String, Integer> map = new ImplementHashMap<>(10);
+        map.put("A", 1);
+        System.out.println("A: " + map.get("A"));
+        map.put("B", 2);
+        map.put("A", 2);
+        System.out.println("New A: " + map.get("A"));
+
+        System.out.println(map.remove("A"));
+        System.out.println(map.containsKey("A"));
+
+        System.out.println(map.containsKey("B"));
+        System.out.println("B : " + map.get("B"));
+
+        System.out.println(map.remove("10"));
+        System.out.println(map.remove(null));
 
     }
 
-    // Implements get() of a hashmap
-    public V get(K key) {
-      int hash = hash(key);
-
-      LinkedList<Entry<K,V>> linkedList = bucketList.get(hash);
-
-      if (linkedList.size() == 0) {
-        return null;
-      } else {
-        for (MyMap.Entry<K,V> entry: linkedList) {
-            K entryKey = entry.getKey();
-            if (entryKey.equals(key)) {
-              return entry.getValue();
-            }
-          }
-        }
-      return null;
-    }
-
-    // Remove a key-value pair from the hashmap
-    public V remove(K key) {
-      if (key == null) {
-        return null;
-      }
-
-      int hash = hash(key);
-
-      LinkedList<Entry<K,V>> linkedList = bucketList.get(hash);
-      MyMap.Entry<K,V> removeEntry = null;
-
-      if (linkedList.size() == 0) {
-        return null;
-      } else {
-        for (MyMap.Entry<K,V> entry: linkedList) {
-          if (entry.getKey().equals(key)) {
-            removeEntry = entry;
-          }
-        }
-      }
-
-      if (removeEntry != null) {
-        linkedList.remove(removeEntry);
-        return removeEntry.getValue();
-      }
-
-      return null;
-    }
-
-    // Checks if a key is present in a hashmap
-    public boolean containsKey(K key) {
-      if (key == null) {
-        return false;
-      }
-
-      int hash = hash(key);
-      LinkedList<Entry<K,V>> linkedList = bucketList.get(hash);
-
-      if (linkedList.size() == 0) {
-        return false;
-      } else {
-        for (MyMap.Entry<K,V> entry: linkedList) {
-          if (entry.getKey().equals(key)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
-
-    // Returns hash of a key
     private int hash(K key) {
-      return Math.abs(key.hashCode()) % size;
+        return Math.abs(key.hashCode()) % size;
     }
 
-    public static class Entry<K,V> {
-      K key;
-      V value;
+    public void put(K key, V value) {
+        if (key == null) {
+            return;
+        }
+        int hash = hash(key);
+        LinkedList<ImplementHashMap.Entry<K, V>> linkedList = bucketList.get(hash);
+        ImplementHashMap.Entry<K, V> newEntry = new Entry<>(key, value);
+        if (linkedList.size() == 0) {
+            linkedList = bucketList.get(hash);
+            linkedList.add(newEntry);
+        } else {
+            for (ImplementHashMap.Entry<K, V> entry : linkedList) {
+                if (entry.getKey().equals(key)) {
+                    entry.setValue(value);
+                    return;
+                }
+            }
+        }
 
-      public Entry(K key, V value) {
-        this.key = key;
-        this.value = value;
-      }
-
-      public K getKey() {
-        return key;
-      }
-
-      public V getValue() {
-        return value;
-      }
-
-      public void setValue(V value) {
-        this.value = value;
-      }
     }
 
+    public V get(K key) {
+        if (key == null) {
+            return null;
+        }
+        int hash = hash(key);
+        LinkedList<ImplementHashMap.Entry<K, V>> linkedList = bucketList.get(hash);
+        if (linkedList.size() == 0) {
+            return null;
+        } else {
+            for (ImplementHashMap.Entry<K, V> entry : linkedList) {
+                if (entry.getKey().equals(key)) {
+                    return entry.getValue();
+                }
+            }
+
+
+        }
+        return null;
+    }
+
+    public boolean containsKey(K key) {
+        if (key == null) {
+            return false;
+        }
+        int hash = hash(key);
+        LinkedList<ImplementHashMap.Entry<K, V>> linkedList = bucketList.get(hash);
+        if (linkedList.size() == 0) {
+            return false;
+        } else {
+            for (ImplementHashMap.Entry<K, V> entry : linkedList) {
+                if (entry.getKey().equals(key)) {
+                    return true;
+
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public V remove(K key) {
+        if (key == null) {
+            return null;
+        }
+        int hash = hash(key);
+        LinkedList<ImplementHashMap.Entry<K, V>> linkedList = bucketList.get(hash);
+        ImplementHashMap.Entry<K, V> removeEntry = null;
+        if (linkedList.size() == 0) {
+            return null;
+        } else {
+            for (ImplementHashMap.Entry<K, V> entry : linkedList) {
+                if (entry.getKey().equals(key)) {
+                    removeEntry = entry;
+                }
+            }
+            if (removeEntry != null) {
+                linkedList.remove(removeEntry);
+                return removeEntry.getValue();
+            }
+        }
+        return null;
+    }
+
+    public static class Entry<K, V> {
+        private K key;
+        private V value;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+    }
 }
+/*
+OUTPUT
+2
+false
+true
+B : 2
+null
+null
 
-public class Solution {
-  public static void main(String[] args)
-    {
-      MyMap<String, String> myMap = new MyMap<>(10);
-      myMap.put("1", "test");
-      myMap.put("1", "test2");
-      myMap.put("1", "test3");
-      myMap.put("2", "test4");
-      myMap.put("3", "test5");
-      myMap.put("2", "test6");
-      System.out.println(myMap.get("1"));
-      System.out.println(myMap.get("2"));
-      System.out.println(myMap.get("3"));
-      myMap.remove("2");
-      myMap.remove(null);
-      System.out.println(myMap.get("1"));
-      System.out.println(myMap.get("2"));
-      System.out.println(myMap.get("3"));
-      System.out.println(myMap.containsKey("3"));
-      System.out.println(myMap.containsKey("4"));
-
-    }
-}
+ */
