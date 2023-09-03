@@ -12,6 +12,7 @@ public class UnionFind {
     public UnionFind(int n) {
         //initially self will be parent of itself  and rnk will be set to 0
         rank = new int[n + 1];
+        size = new int[n + 1];
         Arrays.fill(rank, 0);
         Arrays.fill(size, 1);
 
