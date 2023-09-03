@@ -7,10 +7,13 @@ public class UnionFind {
     int[] rank;
     int[] parent;
 
+    int[] size;
+
     public UnionFind(int n) {
         //initially self will be parent of itself  and rnk will be set to 0
         rank = new int[n + 1];
         Arrays.fill(rank, 0);
+        Arrays.fill(size, 1);
 
         parent = new int[n + 1];
 
@@ -23,23 +26,30 @@ public class UnionFind {
 
         UnionFind unionFind = new UnionFind(7);
 
-        unionFind.unionByRank(1,2);
-        unionFind.unionByRank(2,3);
-        unionFind.unionByRank(4,5);
-        unionFind.unionByRank(6,7);
-        unionFind.unionByRank(5,6);
+//        unionFind.unionByRank(1, 2);
+//        unionFind.unionByRank(2, 3);
+//        unionFind.unionByRank(4, 5);
+//        unionFind.unionByRank(6, 7);
+//        unionFind.unionByRank(5, 6);
 
-        if(unionFind.findULTParent(3) == unionFind.findULTParent(7)){
+
+        unionFind.unionBySize(1, 2);
+        unionFind.unionBySize(2, 3);
+        unionFind.unionBySize(4, 5);
+        unionFind.unionBySize(6, 7);
+        unionFind.unionBySize(5, 6);
+
+        if (unionFind.findULTParent(3) == unionFind.findULTParent(7)) {
             System.out.println("Same");
-        }else{
+        } else {
             System.out.println("Not Same");
         }
 
-        unionFind.unionByRank(3,7);
+        unionFind.unionByRank(3, 7);
 
-        if(unionFind.findULTParent(3) == unionFind.findULTParent(7)){
+        if (unionFind.findULTParent(3) == unionFind.findULTParent(7)) {
             System.out.println("Same");
-        }else{
+        } else {
             System.out.println(" Not Same");
         }
 
@@ -73,6 +83,24 @@ public class UnionFind {
             parent[vUltP] = uUltP;
             rank[uUltP]++;
         }
+    }
+
+    public void unionBySize(int u, int v) {
+        int uUltP = findULTParent(u);
+        int vUltP = findULTParent(v);
+
+        if (uUltP == vUltP) {
+            return;
+        }
+        if (size[uUltP] < size[vUltP]) {
+            parent[uUltP] = vUltP;
+            size[vUltP] += size[uUltP];
+
+        } else {
+            parent[vUltP] = uUltP;
+            size[uUltP] += size[vUltP];
+        }
+
     }
 }
 
